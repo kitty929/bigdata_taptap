@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Model 数据可视化</title>
+  <!-- 引入 jQuery 库 -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- 引入 ECharts 库 -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+  <script src="../static/js/flexible.js"></script>
+  <link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body>
+
+   <!-- 头部盒子 -->
+<!--    <header>-->
+<!--        <h2 id="chart2"></h2>-->
+        <div id="chart2" style="width: 600px; height: 40px;"></div>
+<!--    </header>-->
+    <section class="container">
+          <!-- 左边导航栏 -->
+        <nav class="left_nav">
+          <ul>
+          <li><a href="/1"  onclick="this.style.color='#A6E3E9'">最热门游戏类型</a></li>
+            <li><a href="/2" onclick="this.style.color='#A6E3E9'">各游戏类型的游戏数</a></li>
+            <li><a href="/3" onclick="this.style.color='#A6E3E9'">热门游戏中各游戏类型占比</a></li>
+            <li><a href="/4" onclick="this.style.color='#A6E3E9'">游戏下载排行榜</a></li>
+            <li><a href="/5"  onclick="this.style.color='#A6E3E9'">游戏关注排行耪</a></li>
+            <li><a href="/6"  onclick="this.style.color='#A6E3E9'">评分排行榜</a></li>
+            <li><a href="/7"  onclick="this.style.color='#A6E3E9'">各类型平均评分排行榜</a></li>
+            <li><a href="/"  onclick="this.style.color='#A6E3E9'">流行趋势与下载指导</a></li>
+          </ul>
+        </nav>
+
+        <div id="map">
+             <div id="chart" ></div>
+        </div>
+
+        <div class="decoration">
+            <div></div>
+
+            <div></div>
+        </div>
+
+    </section>
+
+
+
+
+  <script>
+    // 发起 AJAX 请求获取数据
+    $.ajax({
+      url: '/data1',
+      type: 'GET',
+      success: function(response) {
+        // 格式化数据
+        let data = {
+          labels: response.labels,
+          values: response.values
+        };
+        // 渲染图表
+        let myChart = echarts.init(document.getElementById("chart"));
+       let option = {
+          title: {
+            text: '最热门类型图'
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          legend: {},
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01],
+              precision: 16,
+          },
+          yAxis: {
+            type: 'category',
+            data: data.labels,
+            precision: 16, // 设置小数精度为9位
+            inverse:true,
+           axisLabel: {
+                textStyle: {
+                  fontSize: 14, // 设置字号为14px
+                  fontFamily: 'electronicFont' // 设置字体为Arial
+                }
+              }
+          },
+          series: [
+            {
+              // name: '2011',
+              type: 'bar',
+              data: data.values,
+              itemStyle: {
+                  normal: {
+                    barBorderRadius: 0, // 将圆角半径设置为0
+                      color: '#C7E9B0',
+                  },
+                }
+            },
+          ]
+        };
+       myChart.setOption(option);
+
+      }
+    });
+  </script>
+
+ <script>
+         let myChart1 = echarts.init(document.getElementById("chart2"));
+       let option1 = {
+          graphic: {
+            elements: [
+              {
+                type: 'text',
+                left: 'center',
+                top: 'center',
+                style: {
+                  text: 'TapTap大数据分析',
+                  fontSize: 80,
+                  fontWeight: 'bold',
+                  lineDash: [0, 200],
+                  lineDashOffset: 0,
+                  fill: 'transparent',
+                  stroke: '#000',
+                  lineWidth: 1
+                },
+                keyframeAnimation: {
+                  duration: 3000,
+                  loop: true,
+                  keyframes: [
+                    {
+                      percent: 0.7,
+                      style: {
+                        fill: 'transparent',
+                        lineDashOffset: 200,
+                        lineDash: [200, 0]
+                      }
+                    },
+                    {
+                      // Stop for a while.
+                      percent: 0.8,
+                      style: {
+                        fill: 'transparent'
+                      }
+                    },
+                    {
+                      percent: 1,
+                      style: {
+                        fill: 'black'
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        };
+       myChart1.setOption(option1);
+
+
+ </script>
+</body>
+</html>

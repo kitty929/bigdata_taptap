@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Model 数据可视化</title>
+  <!-- 引入 jQuery 库 -->
+<!--  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+  <!-- 引入 ECharts 库 -->
+<!--  <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>-->
+  <link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body>
+
+   <!-- 头部盒子 -->
+    <header>
+        <h2>TapTap游戏平台的大数据分析</h2>
+    </header>
+    <section class="container">
+          <!-- 左边导航栏 -->
+        <nav class="left_nav">
+          <ul>
+            <li><a href="/1"  onclick="this.style.color='#A6E3E9'">最热门游戏类型</a></li>
+            <li><a href="/2" onclick="this.style.color='#A6E3E9'">各游戏类型的游戏数</a></li>
+            <li><a href="/3" onclick="this.style.color='#A6E3E9'">热门游戏中各游戏类型占比</a></li>
+            <li><a href="/4" onclick="this.style.color='#A6E3E9'">游戏下载排行榜</a></li>
+            <li><a href="/5"  onclick="this.style.color='#A6E3E9'">游戏关注排行耪</a></li>
+            <li><a href="/6"  onclick="this.style.color='#A6E3E9'">评分排行榜</a></li>
+            <li><a href="/7"  onclick="this.style.color='#A6E3E9'">各类型平均评分排行榜</a></li>
+            <li><a href="/"  onclick="this.style.color='#A6E3E9'">流行趋势与下载指导</a></li>
+          </ul>
+        </nav>
+
+        <div id="map">
+             <div id="chart" ></div>
+        </div>
+
+        <div class="decoration">
+            <div></div>
+
+            <div></div>
+        </div>
+
+    </section>
+
+
+   <script src="../static/js/flexible.js"></script>
+    <script src="../static/js/echarts.min.js"></script>
+    <!-- 先引入jquery -->
+    <script src="../static/js/jquery.js"></script>
+
+
+  <script>
+    // 发起 AJAX 请求获取数据
+    $.ajax({
+      url: '/data3',
+      type: 'GET',
+      success: function(response) {
+        // 格式化数据
+        let data = {
+          labels: response.labels,
+          values: response.values
+        };
+        // 渲染图表
+        let myChart = echarts.init(document.getElementById("chart"));
+
+        let option = {
+           legend: {
+            type: 'scroll',
+            orient: 'vertical',
+            right: 10,
+            top: 20,
+            bottom: 20,
+            data: data.labels
+          },
+            tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br> {b}: {c} ({d}%)'
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              mark: { show: true },
+              dataView: { show: true, readOnly: false },
+              restore: { show: true },
+              saveAsImage: { show: true }
+            }
+          },
+          series: [
+            {
+              name: '热门游戏中各游戏类型占比',
+              type: 'pie',
+              radius: [50, 250],
+              center: ['50%', '50%'],
+              roseType: 'area',
+              itemStyle: {
+                borderRadius: 8
+              },
+              data: data.values
+            }
+          ]
+        };
+        myChart.setOption(option);
+
+      }
+    });
+  </script>
+</body>
+</html>

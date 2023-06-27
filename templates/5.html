@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Model 数据可视化</title>
+  <!-- 引入 jQuery 库 -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- 引入 ECharts 库 -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
+  <link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body>
+
+   <!-- 头部盒子 -->
+    <header>
+        <h2>TapTap游戏平台的大数据分析</h2>
+    </header>
+    <section class="container">
+          <!-- 左边导航栏 -->
+        <nav class="left_nav">
+          <ul>
+            <li><a href="/1"  onclick="this.style.color='#A6E3E9'">最热门游戏类型</a></li>
+            <li><a href="/2" onclick="this.style.color='#A6E3E9'">各游戏类型的游戏数</a></li>
+            <li><a href="/3" onclick="this.style.color='#A6E3E9'">热门游戏中各游戏类型占比</a></li>
+            <li><a href="/4" onclick="this.style.color='#A6E3E9'">游戏下载排行榜</a></li>
+            <li><a href="/5"  onclick="this.style.color='#A6E3E9'">游戏关注排行耪</a></li>
+            <li><a href="/6"  onclick="this.style.color='#A6E3E9'">评分排行榜</a></li>
+            <li><a href="/7"  onclick="this.style.color='#A6E3E9'">各类型平均评分排行榜</a></li>
+            <li><a href="/"  onclick="this.style.color='#A6E3E9'">流行趋势与下载指导</a></li>
+          </ul>
+        </nav>
+
+        <div id="map">
+             <div id="chart" ></div>
+        </div>
+
+        <div class="decoration">
+            <div></div>
+
+            <div></div>
+        </div>
+
+    </section>
+
+
+   <script src="../static/js/flexible.js"></script>
+<!--    <script src="../static/js/echarts.min.js"></script>-->
+    <!-- 先引入jquery -->
+<!--    <script src="../static/js/jquery.js"></script>-->
+
+
+  <script>
+    // 发起 AJAX 请求获取数据
+    $.ajax({
+      url: '/data5',
+      type: 'GET',
+      success: function(response) {
+          let data = {
+              labels: response.labels,
+              values: response.values
+          };
+            let dataAxis =data.labels;
+          // console.log(dataAxis);
+        let yMax = 50000000;
+        let dataShadow = [];
+        for (let i = 0; i < data.values.length; i++) {
+          dataShadow.push(yMax);
+        }
+        let myChart = echarts.init(document.getElementById("chart"));
+        let option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                  type: 'shadow'
+                }
+              },
+          title: {
+            text: '游戏关注排行榜',
+            subtext: '（可以点击和用鼠标进行缩放）'
+          },
+          xAxis: {
+            data: data.labels,
+            axisLabel: {
+              inside: true,
+              color: '#fff'
+            },
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            },
+            z: 10
+          },
+          yAxis: {
+            axisLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              color: '#999'
+            }
+          },
+          dataZoom: [
+            {
+              type: 'inside'
+            }
+          ],
+          series: [
+            {
+              type: 'bar',
+              showBackground: true,
+              itemStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#83bff6' },
+                  { offset: 0.5, color: '#188df0' },
+                  { offset: 1, color: '#188df0' }
+                ])
+              },
+              emphasis: {
+                itemStyle: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    { offset: 0, color: '#2378f7' },
+                    { offset: 0.7, color: '#2378f7' },
+                    { offset: 1, color: '#83bff6' }
+                  ])
+                }
+              },
+              data: data.values
+            }
+          ]
+        };
+
+        // 3. 把配置给实例对象
+      myChart.setOption(option);
+        // Enable data zoom when user click bar.
+        const zoomSize = 6;
+        myChart.on('click', function (params) {
+          console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
+          myChart.dispatchAction({
+            type: 'dataZoom',
+            startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
+            endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
+          });
+        });
+
+      }
+    });
+  </script>
+</body>
+</html>
