@@ -11,10 +11,12 @@
     <style>
         .rk{
             text-align: center;
-            width:600px;
-            height:600px;
+            width:560px;
+            max-width:800px;
+            height:550px;
             overflow: scroll;
-            padding-left: 50px;
+            /*overflow: hidden;*/
+            padding-left: 20px;
         }
         table{
             width: 100%;
@@ -24,7 +26,10 @@
         table caption{
             font-size: 2em;
             font-weight: bold;
-            margin: 1em 0;
+            padding: 8px 0;
+            border-top: 2px solid #999;
+              border-left: 2px solid #999;
+              border-right: 2px solid #999;
         }
 
         th,td{
@@ -55,6 +60,21 @@
             padding-right: 20px;
         }
 
+        table td:first-child {
+          width: 100px;
+          height: 20px;
+        }
+
+        table tr td:nth-child(2) {
+          width: 200px;
+          height: 20px;
+        }
+
+        table tr td:nth-child(3) {
+          width: 200px;
+          height: 20px;
+        }
+
     </style>
 </head>
 <body>
@@ -78,10 +98,11 @@
           </ul>
         </nav>
 
-        <div id="map">
-             <div class="rk" >
+        <div id="map1" style="display: flex;">
+            <div style="padding-left: 20px;">
+                 <div class="rk">
                  <table>
-                     <caption>评分排行榜表</caption>
+                     <caption>游戏评分排行榜</caption>
                         <thead>
                             <tr>
                                  <th>序号</th>
@@ -97,11 +118,30 @@
                      </tfoot>
                    </table>
              </div>
+            </div>
+
+
+
+             <div class="rk" >
+                 <table>
+                     <caption>类型评分排行榜</caption>
+                        <thead>
+                            <tr>
+                                 <th>序号</th>
+                                 <th>游戏类型</th>
+                                <th>游戏星级评分分数</th>
+                            </tr>
+                          </thead>
+                    <tbody id="test1"></tbody>
+                     <tfoot>
+                        <tr>
+                            <td colspan="5">星级评分按照降序排列</td>
+                        </tr>
+                     </tfoot>
+                   </table>
+             </div>
         </div>
-
         <div class="decoration">
-
-
             <div></div>
         </div>
 
@@ -135,6 +175,21 @@
                               // "<td>" + tt[i].n+"</td>";    //i代表下标，获取数据中的下标为i的n的值，1-n是属性名
                       }
                       test.innerHTML = str1;   //将数据写入html中
+
+            let test1 = document.getElementById("test1");
+         let tt1 = response.labels2;   //第一个data代表json,第二个data代表json里的数组或对象
+          let ii1 =response.values2;
+                      let str2 = "";   //声明str1，防止产生undefined
+                      for (let i = 0; i < tt.length; i++) {   //遍历
+                          str2 += "<tr cate-id='0' fid='0'>" +
+                              "<td>" + (i+1)+ "</td>" +
+                              "<td>" + tt1[i]+ "</td>" +    //i代表下标，获取数据中的下标为i的1的值
+                              "<td>" + ii1[i]+ "</td>" ;   //i代表下标，获取数据中的下标为i的2的值
+                              //.....
+                              // "<td>" + tt[i].n+"</td>";    //i代表下标，获取数据中的下标为i的n的值，1-n是属性名
+                      }
+                      test1.innerHTML = str2;   //将数据写入html中
+
                   },
     });
   </script>

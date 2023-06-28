@@ -7,6 +7,72 @@
   <!-- 引入 ECharts 库 -->
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
   <link rel="stylesheet" href="../static/css/index.css">
+
+     <style>
+         .rk{
+            text-align: center;
+            width:100%;
+            height:560px;
+            overflow: scroll;
+            padding-left: 10px;
+        }
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table caption{
+            font-size: 16px;
+            font-weight: bold;
+            margin: 1em 0;
+        }
+
+        th,td{
+            border: 1px solid #999;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        table thead tr{
+            /*background-color: #AAC4FF;*/
+            background-color: #B5F1CC;
+            color: #fff;
+        }
+
+        table tbody tr:nth-child(odd){
+            background-color: #C9F4AA;
+        }
+
+        table tbody tr:hover{
+            background-color: #ccc;
+        }
+
+        table tbody tr td:first-child{
+            color: #f40;
+        }
+
+        table tfoot tr td{
+            text-align: right;
+            padding-right: 20px;
+        }
+
+        table td:first-child {
+          width: 50px;
+          height: 20px;
+        }
+
+        table tr td:nth-child(2) {
+          width: 160px;
+          height: 20px;
+        }
+
+        table tr td:nth-child(3) {
+          width: 160px;
+          height: 20px;
+        }
+
+    </style>
+
 </head>
 <body>
 
@@ -29,15 +95,52 @@
           </ul>
         </nav>
 <!--        中间主要图表展示-->
-        <div id="map">
-             <div id="chart" ></div>
-        </div>
+<!--        <div id="map">-->
+<!--             <div id="chart" ></div>-->
+<!--        </div>-->
 <!-- 右边描述，增加内容 -->
-        <div class="decoration">
-            <div></div>
+<!--        <div class="decoration">-->
+<!--            <div></div>-->
 
-            <div></div>
+<!--            <div></div>-->
+<!--        </div>-->
+        <div class="flex_con" style="display: flex;justify-content: space-between;">
+<!--             <div class="flex1" style=" display:flex; flex-direction: column;">-->
+            <div class="flex1">
+                 <div class="rk" >
+                     <table>
+                         <caption>评分排行榜表</caption>
+                            <thead>
+                                <tr>
+                                     <th>序号</th>
+                                     <th>游戏名称</th>
+                                     <th>游戏类型名</th>
+                                </tr>
+                            </thead>
+                        <tbody id="chart"></tbody>
+                         <tfoot>
+                            <tr>
+                                <td colspan="5">按照游戏的评分进行降序排名</td>
+                            </tr>
+                         </tfoot>
+                     </table>
+                 </div>
+
+<!--                 <div class="fa" ></div>-->
+
+            </div>
+
+            <div class="flex2"></div>
+
+            <div class="flex3" style=" display:flex; flex-direction: column;">
+                <div class="mychart1"></div>
+
+                <div class="mychart1"></div>
+
+            </div>
+
         </div>
+
 
     </section>
 
@@ -54,95 +157,22 @@
       url: '/data',
       type: 'GET',
       success: function(response) {
-          let dataAxis =['王者荣耀','和平精英','香肠派对','原神','英雄联盟手游','穿越火线：枪战王者','元气骑士','我的世界','QQ飞车','人类跌落梦境','使命召唤手游','光·遇','火影忍者','崩坏：星穹铁道','明日方舟','香肠派对（先行服）','金铲铲之战','蛋仔派对','Phigros','地铁跑酷','崩坏3','第五人格','球球大作战','明日之后','未来之役','开心消消乐?','战双帕弥什','月圆之夜','重生细胞','Party Animals','泰拉瑞亚','霓虹深渊：无限','王者荣耀（体验服）','荒野行动','王牌战士','江南百景图','失落城堡','人工桌面','暗区突围','决战！平安京','艾希','哈利波特:魔法觉醒','Muse Dash 喵斯快跑','阴阳师','一梦江湖','武侠乂','猫和老鼠','幻塔','绝区零','迷你世界','植物大战僵尸2','以闪亮之名','忍者必须死3','辐射 避难所','黎明觉醒：生机','音乐世界 Cytus II','纪念碑谷2','方舟：生存进化','永劫无间手游','一念逍遥','弓箭手大作战','我的勇者','碧蓝航线','荒野乱斗账号绑定工具','跳舞的线','和平精英（体验服）','你了解自己吗','摩尔庄园','弈剑行','我想成为创造者','命运-冠位指定','墨斗','我功夫特牛','重返未来：1999','天涯明月刀','纪念碑谷','鸣潮','同步音律','非人学园','比特小队','阿瑞斯病毒','深空之眼','龙族幻想','元气骑士前传','暗黑破坏神：不朽','狂野飙车9：竞速传奇','火炬之光：无限','还有这种操作2','人生重开模拟器','逃跑吧！少年','最强蜗牛','太空行动','皇室战争账号绑定工具','还有这种操作','公主连结Re:Dive','跑跑卡丁车官方竞速版','三国杀','派对之星','天谕','重装上阵']
-          let data = {
-              labels: response.labels,
-              values: response.values
-          };
-        let yMax = 50000000;
-        let dataShadow = [];
-        for (let i = 0; i < data.values.length; i++) {
-          dataShadow.push(yMax);
-        }
-        let myChart = echarts.init(document.getElementById("chart"));
-        let option = {
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                  type: 'shadow'
-                }
-              },
-          title: {
-            text: '游戏关注排行榜',
-            subtext: '（可以点击和用鼠标进行缩放）'
-          },
-          xAxis: {
-            data: data.labels,
-            axisLabel: {
-              inside: true,
-              color: '#fff'
-            },
-            axisTick: {
-              show: false
-            },
-            axisLine: {
-              show: false
-            },
-            z: 10
-          },
-          yAxis: {
-            axisLine: {
-              show: false
-            },
-            axisTick: {
-              show: false
-            },
-            axisLabel: {
-              color: '#999'
-            }
-          },
-          dataZoom: [
-            {
-              type: 'inside'
-            }
-          ],
-          series: [
-            {
-              type: 'bar',
-              showBackground: true,
-              itemStyle: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0, color: '#83bff6' },
-                  { offset: 0.5, color: '#188df0' },
-                  { offset: 1, color: '#188df0' }
-                ])
-              },
-              emphasis: {
-                itemStyle: {
-                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: '#2378f7' },
-                    { offset: 0.7, color: '#2378f7' },
-                    { offset: 1, color: '#83bff6' }
-                  ])
-                }
-              },
-              data: data.values
-            }
-          ]
-        };
 
-        // 3. 把配置给实例对象
-      myChart.setOption(option);
-        // Enable data zoom when user click bar.
-        const zoomSize = 6;
-        myChart.on('click', function (params) {
-          console.log(dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)]);
-          myChart.dispatchAction({
-            type: 'dataZoom',
-            startValue: dataAxis[Math.max(params.dataIndex - zoomSize / 2, 0)],
-            endValue: dataAxis[Math.min(params.dataIndex + zoomSize / 2, data.length - 1)]
-          });
-        });
+          let chart = document.getElementById("chart");
+          let tt = response.labels;   //第一个data代表json,第二个data代表json里的数组或对象
+          let ii =response.values;
+          let str1 = "";   //声明str1，防止产生undefined
+          for (let i = 0; i < tt.length; i++) {   //遍历
+              str1 += "<tr cate-id='0' fid='0'>" +
+                  "<td>" + (i+1)+ "</td>" +
+                  "<td>" + tt[i]+ "</td>" +    //i代表下标，获取数据中的下标为i的1的值
+                  "<td>" + ii[i]+ "</td>" ;   //i代表下标，获取数据中的下标为i的2的值
+
+              // "<td>" + tt[i].n+"</td>";    //i代表下标，获取数据中的下标为i的n的值，1-n是属性名
+          }
+          chart.innerHTML = str1;   //将数据写入html中
+
+
 
       }
     });
