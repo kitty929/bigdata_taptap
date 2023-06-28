@@ -7,16 +7,16 @@ import mysql.connector
 
 app = Flask(__name__)
 
-# 连接 MySQL 数据库
-db = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="20020929",
-  database="taptap_analysis"
-)
-
-# 创建数据库表
-cursor = db.cursor()
+# # 连接 MySQL 数据库
+# db = mysql.connector.connect(
+#   host="localhost",
+#   user="root",
+#   password="20020929",
+#   database="taptap_analysis"
+# )
+#
+# # 创建数据库表
+# cursor = db.cursor()
 
 @app.before_request
 def before_request():
@@ -68,7 +68,15 @@ def chart7():
 
 @app.route('/data')
 def data():
-
+    # 连接 MySQL 数据库
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="20020929",
+        database="taptap_analysis"
+    )
+    # 创建数据库表
+    cursor = db.cursor()
     # 从数据库获取数据
     cursor.execute("SELECT app_title,fans_count FROM fans_app_top order by fans_rk")
     data = cursor.fetchall()
@@ -84,6 +92,15 @@ def data():
 # 各游戏类型的游戏数
 @app.route('/data2')
 def data2():
+    # 连接 MySQL 数据库
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="20020929",
+        database="taptap_analysis"
+    )
+    # 创建数据库表
+    cursor = db.cursor()
     # 从数据库获取数据
     cursor.execute("SELECT tag_name,tag_number FROM number_tags where tag_number > 50")
     data2 = cursor.fetchall()
@@ -156,6 +173,15 @@ def data2():
 # 各游戏类型的游戏数
 @app.route('/data1')
 def data1():
+    # 连接 MySQL 数据库
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="20020929",
+        database="taptap_analysis"
+    )
+    # 创建数据库表
+    cursor = db.cursor()
     # 从数据库获取数据
     cursor.execute("SELECT tag_name,popular_score_total * 100 as total FROM popular_tags order by popular_score_total desc limit 30")
     data1 = cursor.fetchall()
@@ -189,6 +215,15 @@ def data1_2():
 # 各游戏类型的游戏数
 @app.route('/data3')
 def data3():
+    # 连接 MySQL 数据库
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="20020929",
+        database="taptap_analysis"
+    )
+    # 创建数据库表
+    cursor = db.cursor()
     # 从数据库获取数据
     cursor.execute('''select tag_name, tag_percent*100
         from popular_tags_percent
@@ -207,6 +242,15 @@ def data3():
 # 游戏下载排行榜
 @app.route('/data4')
 def data4():
+    # 连接 MySQL 数据库
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="20020929",
+        database="taptap_analysis"
+    )
+    # 创建数据库表
+    cursor = db.cursor()
     # 从数据库获取数据
     cursor.execute("SELECT app_title,hits_total FROM hits_app_top order by hits_rk limit 20")
     data4 = cursor.fetchall()
@@ -221,6 +265,15 @@ def data4():
 
 @app.route('/data4_2')
 def data4_2():
+    # 连接 MySQL 数据库
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="20020929",
+        database="taptap_analysis"
+    )
+    # 创建数据库表
+    cursor = db.cursor()
     # 从数据库获取数据
     cursor.execute("SELECT app_title,hits_total FROM hits_app_top order by hits_rk")
     data4 = cursor.fetchall()
@@ -237,6 +290,15 @@ def data4_2():
 # 游戏关注排行榜
 @app.route('/data5')
 def data5():
+    # 连接 MySQL 数据库
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="20020929",
+        database="taptap_analysis"
+    )
+    # 创建数据库表
+    cursor = db.cursor()
     # 从数据库获取数据
     cursor.execute("SELECT app_title,fans_count FROM fans_app_top order by fans_rk limit 20")
     data = cursor.fetchall()
@@ -253,6 +315,15 @@ def data5():
 # 游戏关注排行榜
 @app.route('/data5_2')
 def data5_2():
+    # 连接 MySQL 数据库
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="20020929",
+        database="taptap_analysis"
+    )
+    # 创建数据库表
+    cursor = db.cursor()
     # 从数据库获取数据
     cursor.execute("SELECT app_title,fans_count FROM fans_app_top order by fans_rk")
     data = cursor.fetchall()
@@ -271,6 +342,15 @@ def data5_2():
 # 游戏关注排行榜
 @app.route('/data6_1')
 def data6_1():
+    # 连接 MySQL 数据库
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="20020929",
+        database="taptap_analysis"
+    )
+    # 创建数据库表
+    cursor = db.cursor()
     # 从数据库获取数据
     cursor.execute('''SELECT app_title,star_score FROM stars_app_top order by star_rk''')
     data6_1 = cursor.fetchall()
@@ -285,6 +365,15 @@ def data6_1():
 
 @app.route('/data7')
 def data7():
+    # 连接 MySQL 数据库
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="20020929",
+        database="taptap_analysis"
+    )
+    # 创建数据库表
+    cursor = db.cursor()
     # 从数据库获取数据
     cursor.execute("SELECT tag_name,tag_id FROM stars_tags order by star_score_average limit 50")
     data7 = cursor.fetchall()
