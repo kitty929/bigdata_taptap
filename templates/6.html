@@ -68,7 +68,7 @@
         <nav class="left_nav">
           <ul>
              <li><a href="/1"  onclick="this.style.color='#A6E3E9'">最热门游戏类型</a></li>
-            <li><a href="/2" onclick="this.style.color='#A6E3E9'">各游戏类型的游戏数</a></li>
+            <li><a href="/2" onclick="this.style.color='#A6E3E9'">各游戏类型的数量分布</a></li>
             <li><a href="/3" onclick="this.style.color='#A6E3E9'">热门游戏中各游戏类型占比</a></li>
             <li><a href="/4" onclick="this.style.color='#A6E3E9'">游戏下载排行榜</a></li>
             <li><a href="/5"  onclick="this.style.color='#A6E3E9'">游戏关注排行耪</a></li>
@@ -86,12 +86,13 @@
                             <tr>
                                  <th>序号</th>
                                  <th>游戏名称</th>
+                                <th>游戏星级评分分数</th>
                             </tr>
                           </thead>
                     <tbody id="test"></tbody>
                      <tfoot>
                         <tr>
-                            <td colspan="5">表尾</td>
+                            <td colspan="5">星级评分按照降序排列</td>
                         </tr>
                      </tfoot>
                    </table>
@@ -127,8 +128,9 @@
                       let str1 = "";   //声明str1，防止产生undefined
                       for (let i = 0; i < tt.length; i++) {   //遍历
                           str1 += "<tr cate-id='0' fid='0'>" +
-                              "<td>" + ii[i]+ "</td>" +    //i代表下标，获取数据中的下标为i的1的值
-                              "<td>" + tt[i]+ "</td>" ;   //i代表下标，获取数据中的下标为i的2的值
+                              "<td>" + (i+1)+ "</td>" +
+                              "<td>" + tt[i]+ "</td>" +    //i代表下标，获取数据中的下标为i的1的值
+                              "<td>" + ii[i]+ "</td>" ;   //i代表下标，获取数据中的下标为i的2的值
                               //.....
                               // "<td>" + tt[i].n+"</td>";    //i代表下标，获取数据中的下标为i的n的值，1-n是属性名
                       }

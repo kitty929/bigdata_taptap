@@ -7,6 +7,57 @@
   <!-- 引入 ECharts 库 -->
   <script src="https://cdn.jsdelivr.net/npm/echarts@5.1.2/dist/echarts.min.js"></script>
   <link rel="stylesheet" href="../static/css/index.css">
+
+    <style>
+         .rk{
+            text-align: center;
+            width:100%;
+            height:560px;
+            overflow: scroll;
+            padding-left: 10px;
+        }
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table caption{
+            font-size: 16px;
+            font-weight: bold;
+            margin: 1em 0;
+        }
+
+        th,td{
+            border: 1px solid #999;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        table thead tr{
+            /*background-color: #AAC4FF;*/
+            background-color: #B5F1CC;
+            color: #fff;
+        }
+
+        table tbody tr:nth-child(odd){
+            background-color: #C9F4AA;
+        }
+
+        table tbody tr:hover{
+            background-color: #ccc;
+        }
+
+        table tbody tr td:first-child{
+            color: #f40;
+        }
+
+        table tfoot tr td{
+            text-align: right;
+            padding-right: 20px;
+        }
+    </style>
+
+
 </head>
 <body>
 
@@ -19,7 +70,7 @@
         <nav class="left_nav">
           <ul>
             <li><a href="/1"  onclick="this.style.color='#A6E3E9'">最热门游戏类型</a></li>
-            <li><a href="/2" onclick="this.style.color='#A6E3E9'">各游戏类型的游戏数</a></li>
+            <li><a href="/2" onclick="this.style.color='#A6E3E9'">各游戏类型的数量分布</a></li>
             <li><a href="/3" onclick="this.style.color='#A6E3E9'">热门游戏中各游戏类型占比</a></li>
             <li><a href="/4" onclick="this.style.color='#A6E3E9'">游戏下载排行榜</a></li>
             <li><a href="/5"  onclick="this.style.color='#A6E3E9'">游戏关注排行耪</a></li>
@@ -30,13 +81,28 @@
         </nav>
 
         <div id="map">
-             <div id="chart" ></div>
+             <div id="chart" style="left:40px;"></div>
         </div>
 
-        <div class="decoration">
-            <div></div>
-
-            <div></div>
+       <div class="decoration">
+            <div class="rk" >
+                 <table>
+                     <caption>评分排行榜表</caption>
+                        <thead>
+                            <tr>
+                                 <th>序号</th>
+                                 <th>游戏名称</th>
+                                 <th>游戏粉丝数</th>
+                            </tr>
+                          </thead>
+                    <tbody id="test"></tbody>
+                     <tfoot>
+                        <tr>
+                            <td colspan="5">游戏的粉丝数按照降序排列</td>
+                        </tr>
+                     </tfoot>
+                   </table>
+             </div>
         </div>
 
     </section>
@@ -81,7 +147,8 @@
             data: data.labels,
             axisLabel: {
               inside: true,
-              color: '#fff'
+              color: '#435B66',
+                 rotate: -90 // 设置文字旋转角度为-90度
             },
             axisTick: {
               show: false
@@ -111,12 +178,18 @@
             {
               type: 'bar',
               showBackground: true,
+
               itemStyle: {
-                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0, color: '#83bff6' },
-                  { offset: 0.5, color: '#188df0' },
-                  { offset: 1, color: '#188df0' }
-                ])
+                // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                //   { offset: 0, color: '#83bff6' },
+                //   { offset: 0.5, color: '#188df0' },
+                //   { offset: 1, color: '#188df0' }
+                // ])
+                  color: function(params) {
+                  // 定义颜色数组
+                  let colorList = [ '#FF8787', '#F8C4B4', '#E5EBB2','#BCE29E'];
+                  // 返回对应索引的颜色
+                  return colorList[params.dataIndex % colorList.length];},
               },
               emphasis: {
                 itemStyle: {
@@ -148,5 +221,34 @@
       }
     });
   </script>
+
+
+
+  <script>
+    // 发起 AJAX 请求获取数据
+    $.ajax({
+      url: '/data5_2',
+      type: 'GET',
+      success: function(response) {
+          let test = document.getElementById("test");
+         let tt = response.labels;   //第一个data代表json,第二个data代表json里的数组或对象
+          let ii =response.values;
+                      let str1 = "";   //声明str1，防止产生undefined
+                      for (let i = 0; i < tt.length; i++) {   //遍历
+                          str1 += "<tr cate-id='0' fid='0'>" +
+                              "<td>" + (i+1)+ "</td>" +
+                              "<td>" + tt[i]+ "</td>" +    //i代表下标，获取数据中的下标为i的1的值
+                              "<td>" + ii[i]+ "</td>" ;   //i代表下标，获取数据中的下标为i的2的值
+                              //.....
+                              // "<td>" + tt[i].n+"</td>";    //i代表下标，获取数据中的下标为i的n的值，1-n是属性名
+                      }
+                      test.innerHTML = str1;   //将数据写入html中
+                  },
+    });
+  </script>
+
+
+
+
 </body>
 </html>

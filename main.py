@@ -18,6 +18,22 @@ db = mysql.connector.connect(
 # 创建数据库表
 cursor = db.cursor()
 
+@app.before_request
+def before_request():
+    # 在此处连接到 MySQL 数据库
+    global cnx, cursor
+    cnx = mysql.connector.connect(user='root', password='20020929',
+                                  host='localhost',
+                                  database='taptap_analysis')
+    cursor = cnx.cursor()
+
+@app.after_request
+def after_request(response):
+    # 在此处关闭游标对象和数据库连接
+    cursor.close()
+    cnx.close()
+    return response
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -52,6 +68,7 @@ def chart7():
 
 @app.route('/data')
 def data():
+
     # 从数据库获取数据
     cursor.execute("SELECT app_title,fans_count FROM fans_app_top order by fans_rk")
     data = cursor.fetchall()
@@ -75,9 +92,66 @@ def data2():
     values2 = []
     for row in data2:
         labels2.append(row[0])
-        values2.append({"name":row[0], "value": int(row[1])})
+        values2.append({"name": row[0], "value": int(row[1])})
+
+        cursor.execute('''
+                       SELECT level, num
+                       FROM
+                           (SELECT *,
+                               (CASE 
+                                   WHEN tag_number <= 10 THEN '0-10'
+                                   WHEN tag_number <= 50 THEN '10-50'
+                                   WHEN tag_number <= 100 THEN '0-100'
+                                   WHEN tag_number <= 200 THEN '100-200'
+                                   WHEN tag_number <= 300 THEN '200-300'
+                                   WHEN tag_number <= 400 THEN '300-400'
+                                   WHEN tag_number <= 500 THEN '400-500'
+                                   ELSE '>500'
+                               END) AS level, count(*) AS num
+                           FROM number_tags
+                           GROUP BY level) AS t;
+           ''')
+        data2_2 = cursor.fetchall()
+        # 格式化数据
+        labels2_2 = []
+        values2_2 = []
+        for row in data2_2:
+            labels2_2.append(row[0])
+            values2_2.append({"name": row[0], "value": int(row[1])})
+
     # 返回 JSON 格式数据
-    return jsonify({'labels': labels2, 'values': values2})
+    return jsonify({'labels': labels2, 'values': values2, 'labels2': labels2_2, 'values2': values2_2})
+#
+# @app.route('/data2_2')
+# def data2_2():
+#     # 从数据库获取数据
+#     cursor.execute('''
+#                 SELECT level, num
+#                 FROM
+#                     (SELECT *,
+#                         (CASE
+#                             WHEN tag_number <= 10 THEN '0-10'
+#                             WHEN tag_number <= 50 THEN '10-50'
+#                             WHEN tag_number <= 100 THEN '0-100'
+#                             WHEN tag_number <= 200 THEN '100-200'
+#                             WHEN tag_number <= 300 THEN '200-300'
+#                             WHEN tag_number <= 400 THEN '300-400'
+#                             WHEN tag_number <= 500 THEN '400-500'
+#                             ELSE '>500'
+#                         END) AS level, count(*) AS num
+#                     FROM number_tags
+#                     GROUP BY level) AS t;
+#     ''')
+#     data2_2 = cursor.fetchall()
+#     # 格式化数据
+#     labels2 = []
+#     values2 = []
+#     for row in data2_2:
+#         labels2.append(row[0])
+#         values2.append({"name": row[0], "value": int(row[1])})
+#     # 返回 JSON 格式数据
+#     return jsonify({'labels': labels2, 'values': values2})
+
 
 # 各游戏类型的游戏数
 @app.route('/data1')
@@ -91,10 +165,26 @@ def data1():
     for row in data1:
         labels2.append(row[0])
         values2.append({"name": row[0], "value": int(row[1])})
+        # 关闭游标对象
+    cursor.close()
     # 返回 JSON 格式数据
     return jsonify({'labels': labels2, 'values': values2})
 
-
+@app.route('/data1_2')
+def data1_2():
+    # 从数据库获取数据
+    cursor.execute("SELECT tag_name,popular_score_total FROM popular_tags order by popular_score_total desc")
+    data1_2 = cursor.fetchall()
+    # 格式化数据
+    labels2 = []
+    values2 = []
+    for row in data1_2:
+        labels2.append(row[0])
+        values2.append(float(row[1]))
+        # 关闭游标对象
+    cursor.close()
+    # 返回 JSON 格式数据
+    return jsonify({'labels': labels2, 'values': values2})
 
 # 各游戏类型的游戏数
 @app.route('/data3')
@@ -109,7 +199,7 @@ def data3():
     values3 = []
     for row in data3:
         labels3.append(row[0])
-        values3.append({"name":row[0], "value": int(row[1])})
+        values3.append({"name": row[0], "value": int(row[1])})
     # 返回 JSON 格式数据
     return jsonify({'labels': labels3, 'values': values3})
 
@@ -129,6 +219,21 @@ def data4():
     # 返回 JSON 格式数据
     return jsonify({'labels': labels, 'values': values})
 
+@app.route('/data4_2')
+def data4_2():
+    # 从数据库获取数据
+    cursor.execute("SELECT app_title,hits_total FROM hits_app_top order by hits_rk")
+    data4 = cursor.fetchall()
+    # 格式化数据
+    labels = []
+    values = []
+    for row in data4:
+        labels.append(row[0])
+        values.append(int(row[1]))
+    # 返回 JSON 格式数据
+    return jsonify({'labels': labels, 'values': values})
+
+
 # 游戏关注排行榜
 @app.route('/data5')
 def data5():
@@ -144,23 +249,38 @@ def data5():
     # 返回 JSON 格式数据
     return jsonify({'labels': labels, 'values': values})
 
+
+# 游戏关注排行榜
+@app.route('/data5_2')
+def data5_2():
+    # 从数据库获取数据
+    cursor.execute("SELECT app_title,fans_count FROM fans_app_top order by fans_rk")
+    data = cursor.fetchall()
+    # 格式化数据
+    labels = []
+    values = []
+    for row in data:
+        labels.append(row[0])
+        values.append(int(row[1]))
+    # 返回 JSON 格式数据
+    return jsonify({'labels': labels, 'values': values})
+
+
+
+
 # 游戏关注排行榜
 @app.route('/data6_1')
 def data6_1():
     # 从数据库获取数据
-    cursor.execute('''SELECT app_title,star_rk FROM stars_app_top order by star_rk''')
+    cursor.execute('''SELECT app_title,star_score FROM stars_app_top order by star_rk''')
     data6_1 = cursor.fetchall()
     # 格式化数据
     labels = []
     values = []
-    # rst = []
-    # for row in data6_1:
-    #     rst.append({'name': row[0], 'value': int(row[1])})
     for row in data6_1:
         labels.append(row[0])
-        values.append(int(row[1]))
+        values.append(float(row[1]))
     # 返回 JSON 格式数据
-    # return jsonify({'labels': rst})
     return jsonify({'labels': labels, 'values': values})
 
 @app.route('/data7')
