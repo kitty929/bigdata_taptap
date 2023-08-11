@@ -18,14 +18,13 @@
           <!-- 左边导航栏 -->
         <nav class="left_nav">
           <ul>
-            <li><a href="/1"  onclick="this.style.color='#A6E3E9'">最热门游戏类型</a></li>
+            <li><a href="/"  onclick="this.style.color='#A6E3E9'">最热门游戏类型</a></li>
+           <li><a href="/3" onclick="this.style.color='#A6E3E9'">热门游戏中各游戏类型占比</a></li>
             <li><a href="/2" onclick="this.style.color='#A6E3E9'">各游戏类型的数量分布</a></li>
-            <li><a href="/3" onclick="this.style.color='#A6E3E9'">热门游戏中各游戏类型占比</a></li>
             <li><a href="/4" onclick="this.style.color='#A6E3E9'">游戏下载排行榜</a></li>
             <li><a href="/5"  onclick="this.style.color='#A6E3E9'">游戏关注排行耪</a></li>
             <li><a href="/6"  onclick="this.style.color='#A6E3E9'">评分排行榜</a></li>
-            <li><a href="/7"  onclick="this.style.color='#A6E3E9'">各类型平均评分排行榜</a></li>
-            <li><a href="/"  onclick="this.style.color='#A6E3E9'">流行趋势与下载指导</a></li>
+            <li><a href="/result"  onclick="this.style.color='#A6E3E9'">流行趋势与下载指导</a></li>
           </ul>
         </nav>
 
@@ -63,6 +62,16 @@
         let myChart = echarts.init(document.getElementById("chart"));
 
         let option = {
+             title: {
+            text: '热门游戏中各游戏类型占比图',
+            left: true,
+              textStyle: {
+               fontFamily:'electronicFont',
+                  fontSize: 16,
+                  fontWeight: 'bolder',
+                  // lineHeight:35
+              }
+          },
            legend: {
             type: 'scroll',
             orient: 'vertical',

@@ -68,14 +68,13 @@
           <!-- 左边导航栏 -->
         <nav class="left_nav">
           <ul>
-             <li><a href="/1"  onclick="this.style.color='#A6E3E9'">最热门游戏类型</a></li>
+             <li><a href="/"  onclick="this.style.color='#A6E3E9'">最热门游戏类型</a></li>
+           <li><a href="/3" onclick="this.style.color='#A6E3E9'">热门游戏中各游戏类型占比</a></li>
             <li><a href="/2" onclick="this.style.color='#A6E3E9'">各游戏类型的数量分布</a></li>
-            <li><a href="/3" onclick="this.style.color='#A6E3E9'">热门游戏中各游戏类型占比</a></li>
             <li><a href="/4" onclick="this.style.color='#A6E3E9'">游戏下载排行榜</a></li>
             <li><a href="/5"  onclick="this.style.color='#A6E3E9'">游戏关注排行耪</a></li>
             <li><a href="/6"  onclick="this.style.color='#A6E3E9'">评分排行榜</a></li>
-            <li><a href="/7"  onclick="this.style.color='#A6E3E9'">各类型平均评分排行榜</a></li>
-            <li><a href="/"  onclick="this.style.color='#A6E3E9'">流行趋势与下载指导</a></li>
+            <li><a href="/result"  onclick="this.style.color='#A6E3E9'">流行趋势与下载指导</a></li>
           </ul>
         </nav>
 
@@ -86,20 +85,16 @@
         <div class="decoration">
             <div class="rk" >
                  <table>
-                     <caption>评分排行榜表</caption>
+                     <caption>游戏下载排行榜</caption>
                         <thead>
                             <tr>
                                  <th>序号</th>
                                  <th>游戏名称</th>
-                                 <th>游戏粉丝数</th>
+                                 <th>游戏下载量</th>
+
                             </tr>
                           </thead>
                     <tbody id="test"></tbody>
-                     <tfoot>
-                        <tr>
-                            <td colspan="5">游戏的粉丝数按照降序排列</td>
-                        </tr>
-                     </tfoot>
                    </table>
              </div>
         </div>

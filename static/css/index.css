@@ -55,12 +55,12 @@ header h2{
   }
 
   .container .left_nav li a.active {
-    /* background-color: #A6E3E9; */
+     /*background-color: #A6E3E9;*/
     color: #FFB6B9;
   }
 
-  .container .left_nav li a:hover:not(.active) {
-    /* background-color: #555; */
+  .container .left_nav li:hover:not(.active) {
+     background-color: #F9F9F9;
     color: #FFB6B9;
   }
 

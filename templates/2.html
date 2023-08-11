@@ -12,7 +12,7 @@
 
         .divider {
       width: 2px;
-      height: 560px;
+      height: 550px;
       position: relative;
       margin: 0 auto;
       background-color: #000;
@@ -26,7 +26,7 @@
       }
       50% {
         opacity: 0;
-        transform: translateY(100%);
+        transform: translateY(70%);
       }
       100% {
         opacity: 1;
@@ -45,14 +45,13 @@
           <!-- 左边导航栏 -->
         <nav class="left_nav">
           <ul>
-            <li><a href="/1"  onclick="this.style.color='#A6E3E9'">最热门游戏类型</a></li>
+            <li><a href="/"  onclick="this.style.color='#A6E3E9'">最热门游戏类型</a></li>
+           <li><a href="/3" onclick="this.style.color='#A6E3E9'">热门游戏中各游戏类型占比</a></li>
             <li><a href="/2" onclick="this.style.color='#A6E3E9'">各游戏类型的数量分布</a></li>
-            <li><a href="/3" onclick="this.style.color='#A6E3E9'">热门游戏中各游戏类型占比</a></li>
             <li><a href="/4" onclick="this.style.color='#A6E3E9'">游戏下载排行榜</a></li>
             <li><a href="/5"  onclick="this.style.color='#A6E3E9'">游戏关注排行耪</a></li>
             <li><a href="/6"  onclick="this.style.color='#A6E3E9'">评分排行榜</a></li>
-            <li><a href="/7"  onclick="this.style.color='#A6E3E9'">各类型平均评分排行榜</a></li>
-            <li><a href="/"  onclick="this.style.color='#A6E3E9'">流行趋势与下载指导</a></li>
+            <li><a href="/result"  onclick="this.style.color='#A6E3E9'">流行趋势与下载指导</a></li>
           </ul>
         </nav>
 
@@ -62,17 +61,14 @@
 
         <div class="divider"></div>
         <div class="decoration" style="display: flex; flex-direction: column; align-items: center;">
-            <div id="chart3" style="width:100%; height:400px; "></div>
-            <div style="width:100%; height:100px;"><span style="text-align: center; font-size: 16px; font-family: electronicFont;">通过对比两个饼形图，我们得出游戏类型的数量图中最多的是</span></div>
+            <div id="chart3" style="width:100%; height:380px; "></div>
+<!--            <div style="width:100%; height:100px;"><span style="text-align: center; font-size: 16px; font-family: electronicFont;"></span></div>-->
+             <div style="width:100%; height:100px; "><img src="../static/img/text7_1.png" style="text-align: center; font-size: 16px; font-family: electronicFont;"></div>
         </div>
 
     </section>
 
-
    <script src="../static/js/flexible.js"></script>
-<!--    <script src="../static/js/echarts.min.js"></script>-->
-    <!-- 先引入jquery -->
-<!--    <script src="../static/js/jquery.js"></script>-->
 
 
   <script>
